@@ -8,6 +8,7 @@ class HomeController
 {
     private $PostModel;
     private $UserModel;
+    public $title = "Página Inicial";
 
     public function __construct($db)
     {
@@ -15,11 +16,11 @@ class HomeController
         $this->UserModel = new UserModel($db);
     }
 
+    /**
+     * view home
+     */
     public function index()
     {
-        var_dump($this->UserModel->getAll());
-
-        $title = 'Página Inicial';
         ob_start();
         include __DIR__ . '/../views/home.php';
         $content = ob_get_clean();

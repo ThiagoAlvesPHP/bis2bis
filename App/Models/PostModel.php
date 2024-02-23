@@ -1,10 +1,22 @@
 <?php
+
 namespace App\Models;
 
 class PostModel
 {
-    // Método para obter todos os posts (exemplo simples)
-    public function getAllPosts()
+    const TABLE = "posts";
+
+    private $db;
+
+    public function __construct($db)
+    {
+        $this->db = $db;
+    }
+
+    /**
+     * list all posts
+     */
+    public function getAll()
     {
         // Aqui você poderia realizar uma consulta ao banco de dados
         // e retornar os dados dos posts

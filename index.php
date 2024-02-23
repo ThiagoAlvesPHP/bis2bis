@@ -14,6 +14,8 @@ spl_autoload_register(function ($class) {
 $route = $_GET['url'] ?? 'home';
 $controller = null;
 
+$authMiddleware = new App\Middleware\AuthMiddleware();
+
 switch ($route) {
     case 'home':
         $controller = new App\Controllers\HomeController($db);
@@ -24,10 +26,18 @@ switch ($route) {
         $controller->show($_GET['post_id'] ?? null);
         break;
     case 'admin':
+        $authMiddleware->handle();
         $controller = new App\Controllers\AdminController($db);
         $controller->index();
         break;
-        // Outras rotas aqui...
+    case 'login':
+        $controller = new App\Controllers\AuthController($db);
+        $controller->index();
+        break;
+    case 'logout':
+        $controller = new App\Controllers\AuthController($db);
+        $controller->logout();
+        break;
     default:
         // Rota padrão ou manipulador de erro
         $controller = new App\Controllers\ErrorController();
