@@ -75,6 +75,17 @@ class PostModel
     }
 
     /**
+     * destroy find post by ID
+     * @param int $id
+     */
+    public function destroy($id)
+    {
+        $statement = $this->db->prepare("DELETE FROM " . self::TABLE . " WHERE id = :id");
+        $statement->bindValue(':id', $id);
+        $statement->execute();
+    }
+
+    /**
      * query custom search
      */
     public function customSearch($sql)

@@ -37,6 +37,31 @@ class PostsController extends BaseController
     {
         $find = (!empty($edit)) ? $this->PostModel->find($edit) : false;
 
+        if (!empty($del)) {
+            $find = (!empty($del)) ? $this->PostModel->find($del) : false;
+            if (empty($find)) {
+                $_SESSION['alert'] = [
+                    "status"    => false,
+                    "message"   => "Nenhum post encontrado!",
+                    "class"     => "warning"
+                ];
+                header('Location: ' . BASE . 'admin/' . $this->page);
+                exit;
+            }
+
+            if (file_exists($find['image'])) {
+                unlink($find['image']);
+            }
+            $this->PostModel->destroy($del);
+            $_SESSION['alert'] = [
+                "status"    => false,
+                "message"   => "Post deletado!",
+                "class"     => "danger"
+            ];
+            header('Location: ' . BASE . 'admin/' . $this->page);
+            exit;
+        }
+
         ob_start();
         include __DIR__ . '/../views/admin.php';
         $content = ob_get_clean();
@@ -57,7 +82,7 @@ class PostsController extends BaseController
             if (empty($find)) {
                 $_SESSION['alert'] = [
                     "status"    => false,
-                    "message"   => "Nenhum post encotrado!",
+                    "message"   => "Nenhum post encontrado!",
                     "class"     => "warning"
                 ];
                 header('Location: ' . BASE . 'admin/' . $this->page . "?edit=" . $id);
@@ -73,8 +98,6 @@ class PostsController extends BaseController
                 header('Location: ' . BASE . 'admin/' . $this->page . "?edit=" . $id);
                 exit;
             }
-
-            echo "<pre>";
 
             if (isset($_FILES['image']) && $_FILES['image']['size'] > 0) {
                 if (!in_array($_FILES['image']['type'], $this->typeImages)) {
@@ -193,7 +216,9 @@ class PostsController extends BaseController
 
         foreach ($data as $value) {
             $item = array();
-            $actions = '<a href="' . BASE . 'admin/posts?edit=' . $value['id'] . '" class="btn btn-info"><i class="far fa-edit"></i></a>';
+            $actions = '<a href="' . BASE . 'admin/posts?edit=' . $value['id'] . '" class="btn btn-info"><i class="far fa-edit"></i></a> | ';
+            $actions .= '<a href="' . BASE . 'admin/posts?del=' . $value['id'] . '" class="btn btn-danger delete-post"><i class="fas fa-trash-alt"></i></a>';
+
             $item[] = $actions;
             $item[] = $value["title"];
             $item[] = $value["slug"];

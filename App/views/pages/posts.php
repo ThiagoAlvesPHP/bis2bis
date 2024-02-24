@@ -96,4 +96,14 @@
             }
         });
     });
+
+    $(document).on('click', '.delete-post', function(e) {
+        e.preventDefault();
+
+        let href = $(this).attr('href');
+        const confirmDelete = confirm("Tem certeza que deseja excluir este post?");
+        if (confirmDelete) {
+            location.href = href;
+        }
+    });
 </script>
