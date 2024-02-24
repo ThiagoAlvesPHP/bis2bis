@@ -1,0 +1,17 @@
+.admin .col {
+    padding: 20px;
+}
+
+.navbar-dashboard {
+    padding: 20px 0;
+    box-shadow: 0px 3px 4px;
+    height: 100%;
+}
+
+.navbar-dashboard li {
+    transition: all ease .5s;
+}
+
+.navbar-dashboard li:hover {
+    background-color: #d3cdcd;
+}

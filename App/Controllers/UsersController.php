@@ -2,10 +2,10 @@
 
 namespace App\Controllers;
 
-class AdminController
+class UsersController
 {
-    public $title = "Dashboard";
-    public $page = "dashboard";
+    public $title = "Usuários";
+    public $page = "users";
 
     public function index()
     {
