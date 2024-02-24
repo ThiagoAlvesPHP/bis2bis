@@ -16,6 +16,9 @@ class UsersController extends BaseController
         $this->UserModel = new UserModel($db);
     }
 
+    /**
+     * view admin user
+     */
     public function index()
     {
         $list = $this->UserModel->getAll();
@@ -38,13 +41,13 @@ class UsersController extends BaseController
             }
             $this->post['id'] = $id;
 
-            if ($this->UserModel->getEmail($this->post['email'], $id)) {
+            if ($this->UserModel->hasEmail($this->post['email'], $id)) {
                 $_SESSION['alert'] = [
                     "status"    => false,
                     "message"   => "E-mail já esta em uso!",
                     "class"     => "warning"
                 ];
-                header('Location: ' . BASE . 'admin/users');
+                header('Location: ' . BASE . 'admin/' . $this->page);
                 exit;
             }
 
@@ -57,16 +60,16 @@ class UsersController extends BaseController
                 "message"   => "Atualizado com sucesso!",
                 "class"     => "success"
             ];
-            header('Location: ' . BASE . 'admin/users');
+            header('Location: ' . BASE . 'admin/' . $this->page);
             exit;
         } else {
-            if ($this->UserModel->getEmail($this->post['email'], null)) {
+            if ($this->UserModel->hasEmail($this->post['email'], null)) {
                 $_SESSION['alert'] = [
                     "status"    => false,
                     "message"   => "E-mail já esta em uso!",
                     "class"     => "warning"
                 ];
-                header('Location: ' . BASE . 'admin/users');
+                header('Location: ' . BASE . 'admin/' . $this->page);
                 exit;
             }
 
@@ -77,7 +80,7 @@ class UsersController extends BaseController
                 "message"   => "Registrado com sucesso!",
                 "class"     => "success"
             ];
-            header('Location: ' . BASE . 'admin/users');
+            header('Location: ' . BASE . 'admin/' . $this->page);
             exit;
         }
     }

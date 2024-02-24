@@ -100,6 +100,7 @@ class UserModel
 
     /**
      * get find user by ID
+     * @param int $id
      */
     public function find($id)
     {
@@ -112,8 +113,9 @@ class UserModel
     /**
      * verify email
      * @param string $email
+     * @param int $id
      */
-    public function getEmail($email, $id = "")
+    public function hasEmail($email, $id = "")
     {
         $statement = "SELECT * FROM " . self::TABLE . " WHERE email = :email";
         if (!empty($id)) {

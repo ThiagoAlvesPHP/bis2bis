@@ -6,8 +6,18 @@ switch ($route) {
         break;
     case 'post':
         $controller = new App\Controllers\PostsController($db);
-        $controller->show($_GET['post_id'] ?? null);
+        $controller->show($_GET['slug'] ?? null);
         break;
+    case 'login':
+        $controller = new App\Controllers\AuthController($db);
+        $controller->index();
+        break;
+    case 'logout':
+        $controller = new App\Controllers\AuthController($db);
+        $controller->logout();
+        break;
+
+        // init Admin
     case 'admin':
         $authMiddleware->handle();
         $controller = new App\Controllers\AdminController($db);
@@ -26,16 +36,20 @@ switch ($route) {
     case 'admin/posts':
         $authMiddleware->handle();
         $controller = new App\Controllers\PostsController($db);
-        $controller->index();
+        $controller->index($_GET['edit'] ?? null, $_GET['del'] ?? null);
         break;
-    case 'login':
-        $controller = new App\Controllers\AuthController($db);
-        $controller->index();
+    case 'admin/posts/action':
+        $authMiddleware->handle();
+        $controller = new App\Controllers\PostsController($db);
+        $controller->action($_GET['id'] ?? null);
         break;
-    case 'logout':
-        $controller = new App\Controllers\AuthController($db);
-        $controller->logout();
+    case 'admin/posts/ajax':
+        $authMiddleware->handle();
+        $controller = new App\Controllers\PostsController($db);
+        $controller->ajax();
         break;
+        // end admin
+
     default:
         // Rota padrão ou manipulador de erro
         $controller = new App\Controllers\ErrorController();

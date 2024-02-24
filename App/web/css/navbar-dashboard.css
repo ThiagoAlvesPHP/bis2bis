@@ -1,3 +1,7 @@
+.admin {
+    flex-wrap: unset;
+}
+
 .admin .col {
     padding: 20px;
 }

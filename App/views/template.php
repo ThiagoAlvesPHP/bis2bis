@@ -12,6 +12,13 @@
     <!-- Fontawesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+    <!-- datatable -->
+    <link rel="stylesheet" type="text/css" href="<?= BASE; ?>App/web/assets/dataTable/dataTable.css">
+    <!-- jquery -->
+    <script type="text/javascript" src="<?= BASE; ?>App/web/js/jquery.min.js"></script>
+    <!-- editor em texterea estilo word -->
+    <script type="text/javascript" src="<?= BASE; ?>App/web/assets/ckeditor/ckeditor.js"></script>
+
     <script>
         const BASE = "<?= BASE; ?>";
     </script>
@@ -36,6 +43,11 @@
                         </a>
                     </li>
                     <?php if (!empty($_SESSION['user'])) : ?>
+                        <li class="nav-item">
+                            <a class="nav-link" title="Logout" href="<?= BASE; ?>">
+                                Olá, <?=$_SESSION['user_data']['name']; ?> (:
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link" title="Logout" href="<?= BASE; ?>logout">
                                 <i class="fas fa-sign-out-alt"></i>
@@ -73,6 +85,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Core theme JS-->
     <script src="<?= BASE; ?>App/web/js/scripts.js"></script>
+    <!-- dataTable -->
+    <script src="<?= BASE; ?>App/web/assets/dataTable/dataTable.js"></script>
 </body>
 
 </html>

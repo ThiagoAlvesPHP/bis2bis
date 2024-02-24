@@ -14,6 +14,7 @@ spl_autoload_register(function ($class) {
 $route = $_GET['url'] ?? 'home';
 $controller = null;
 
-$authMiddleware = new App\Middleware\AuthMiddleware();
+$authMiddleware = new App\Middleware\AuthMiddleware($db);
+$authMiddleware->getUser();
 
 include './routes.php';
