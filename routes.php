@@ -18,6 +18,11 @@ switch ($route) {
         $controller = new App\Controllers\UsersController($db);
         $controller->index();
         break;
+    case 'admin/users/action':
+        $authMiddleware->handle();
+        $controller = new App\Controllers\UsersController($db);
+        $controller->action($_GET['id'] ?? null);
+        break;
     case 'admin/posts':
         $authMiddleware->handle();
         $controller = new App\Controllers\PostsController($db);
