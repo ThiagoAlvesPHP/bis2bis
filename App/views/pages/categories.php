@@ -11,20 +11,11 @@
 <div class="row">
     <div class="col">
         <h3>Registro</h3>
-        <form action="<?= BASE ?>admin/users/action" method="POST">
+        <form action="<?= BASE ?>admin/categories/action" method="POST">
             <div class="mb-3">
                 <label for="name" class="form-label">Nome</label>
                 <input type="text" class="form-control" id="name" name="name">
             </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">E-mail</label>
-                <input type="email" class="form-control" id="email" name="email">
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Senha</label>
-                <input type="password" class="form-control" id="password" name="password">
-            </div>
-
             <div class="d-grid gap-2 d-md-block">
                 <button class="btn btn-success">Salvar</button>
             </div>
@@ -39,8 +30,6 @@
                         <tr>
                             <th scope="col">Ação</th>
                             <th scope="col">Nome</th>
-                            <th scope="col">E-mail</th>
-                            <th scope="col">Status</th>
                         </tr>
                     </thead>
                     <?php foreach ($list as $item) : ?>
@@ -62,14 +51,6 @@
                                                             <label for="name" class="form-label">Nome</label>
                                                             <input type="text" value="<?= $item['name']; ?>" class="form-control" id="name" name="name">
                                                         </div>
-                                                        <div class="mb-3">
-                                                            <label for="email" class="form-label">E-mail</label>
-                                                            <input type="email" value="<?= $item['email']; ?>" class="form-control" id="email" name="email">
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label for="password" class="form-label">Senha</label>
-                                                            <input type="password" class="form-control" id="password" name="password">
-                                                        </div>
 
                                                         <div class="form-check form-switch">
                                                             <input class="form-check-input" <?= $item['is_active'] ? "checked" : ""; ?> type="checkbox" role="switch" name="is_active" id="is_active<?= $item['id']; ?>">
@@ -85,8 +66,6 @@
                                     </div>
                                 </th>
                                 <td><?= $item['name']; ?></td>
-                                <td><?= $item['email']; ?></td>
-                                <td><?= $item['is_active'] ? "Ativo" : "Inativo"; ?></td>
                             </tr>
                         </tbody>
                     <?php endforeach; ?>

@@ -2,11 +2,13 @@
 
 namespace App\Controllers;
 
+use App\Models\CategoryModel;
 use App\Models\PostModel;
 use App\Models\UserModel;
 
 class PostsController extends BaseController
 {
+    private $CategoryModel;
     private $PostModel;
     private $UserModel;
     public $title = "Posts";
@@ -15,6 +17,7 @@ class PostsController extends BaseController
     public function __construct($db)
     {
         parent::__construct();
+        $this->CategoryModel = new CategoryModel($db);
         $this->PostModel = new PostModel($db);
         $this->UserModel = new UserModel($db);
     }
@@ -36,6 +39,7 @@ class PostsController extends BaseController
     public function index($edit = "", $del = "")
     {
         $find = (!empty($edit)) ? $this->PostModel->find($edit) : false;
+        $categories = $this->CategoryModel->getAll();
 
         if (!empty($del)) {
             $find = (!empty($del)) ? $this->PostModel->find($del) : false;
@@ -114,11 +118,12 @@ class PostsController extends BaseController
                 $this->post['image'] = $this->pathImagePost . md5($_FILES['image']['tmp_name'] . time() . rand(0, 999)) . '.' . $extension;
             }
 
-            if (file_exists($find['image'])) {
-                unlink($find['image']);
+            if (isset($_FILES['image']) && $_FILES['image']['size'] > 0) {
+                if (file_exists($find['image'])) {
+                    unlink($find['image']);
+                }
+                move_uploaded_file($_FILES['image']['tmp_name'], $this->post['image']);
             }
-
-            move_uploaded_file($_FILES['image']['tmp_name'], $this->post['image']);
 
             $this->PostModel->update($this->post);
             $_SESSION['alert'] = [
@@ -185,17 +190,20 @@ class PostsController extends BaseController
             array(0 => 'id'),
             array(1 => 'title'),
             array(2 => 'slug'),
-            array(3 => 'image'),
-            array(4 => 'user_id'),
-            array(5 => 'is_active'),
-            array(5 => 'created_at'),
+            array(3 => 'category_id'),
+            array(4 => 'image'),
+            array(5 => 'user_id'),
+            array(6 => 'is_active'),
+            array(7 => 'created_at'),
         );
 
-        $sql = "SELECT p.*, u.name as name_user 
-        FROM " . $this->PostModel::TABLE . " as p
-        LEFT JOIN " . $this->UserModel::TABLE . " as u
-        ON p.user_id = u.id
-        WHERE 1=1 ";
+        $sql = "SELECT p.*, u.name as name_user , c.name as name_category
+            FROM " . $this->PostModel::TABLE . " as p
+            LEFT JOIN " . $this->UserModel::TABLE . " as u
+            ON p.user_id = u.id
+            LEFT JOIN " . $this->CategoryModel::TABLE . " as c
+            ON p.category_id = c.id
+            WHERE 1=1 ";
 
         if (!empty($requestData['search']['value'])) {
             $sql .= " AND (p.id LIKE '%" . $requestData['search']['value'] . "%' ";
@@ -203,6 +211,7 @@ class PostsController extends BaseController
             $sql .= " OR p.slug LIKE '%" . $requestData['search']['value'] . "%' ";
             $sql .= " OR u.name LIKE '%" . $requestData['search']['value'] . "%' ";
             $sql .= " OR p.is_active LIKE '%" . $requestData['search']['value'] . "%' ";
+            $sql .= " OR c.name LIKE '%" . $requestData['search']['value'] . "%' ";
             $sql .= " OR p.created_at LIKE '%" . $requestData['search']['value'] . "%' )";
         }
 
@@ -222,6 +231,7 @@ class PostsController extends BaseController
             $item[] = $actions;
             $item[] = $value["title"];
             $item[] = $value["slug"];
+            $item[] = $value["name_category"];
             $item[] = '<img width="30" src="' . BASE . $value["image"] . '" class="rounded mx-auto d-block" alt="' . $value['title'] . '">';
             $item[] = $value["name_user"];
             $item[] = $value["is_active"] ? "Ativo" : "Inativo";

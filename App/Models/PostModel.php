@@ -55,11 +55,31 @@ class PostModel
     /**
      * list posts
      */
-    public function getAll()
+    public function getAll($limit = "", $category_id = "")
     {
-        $statement = $this->db->prepare("SELECT * FROM " . self::TABLE);
+        $statement = "SELECT p.*, u.name as user_name, c.name as name_category FROM " . self::TABLE . " as p LEFT JOIN " . UserModel::TABLE . " as u ON p.user_id = u.id LEFT JOIN " . CategoryModel::TABLE . " as c ON p.category_id = c.id";
+
+        if (!empty($category_id)) {
+            $statement .= " WHERE p.category_id = " . $category_id;
+        }
+
+        if (!empty($limit)) {
+            $statement .= " LIMIT " . $limit;
+        }
+
+        $statement = $this->db->prepare($statement);
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * post rand
+     */
+    public function getRand()
+    {
+        $statement = $this->db->prepare("SELECT p.*, u.name as user_name, c.name as name_category FROM " . self::TABLE . " as p LEFT JOIN " . UserModel::TABLE . " as u ON p.user_id = u.id LEFT JOIN " . CategoryModel::TABLE . " as c ON p.category_id = c.id ORDER BY RAND() LIMIT 1");
+        $statement->execute();
+        return $statement->fetch(\PDO::FETCH_ASSOC);
     }
 
     /**

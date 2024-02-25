@@ -27,6 +27,14 @@
                 <label for="text" class="form-label">Conteudo *</label>
                 <textarea name="text" id="text" cols="30" rows="10"><?= $find ? $find["text"] : ""; ?></textarea>
             </div>
+            <div class="mb-3">
+                <label for="">Seleciona uma Categoria</label>
+                <select class="form-select" name="category_id" aria-label="Default select example">
+                    <?php foreach ($categories as $value) : ?>
+                        <option <?= $find && $find["category_id"] == $value['id'] ? "selected" : ""; ?> value="<?= $value['id']; ?>"><?= $value['name']; ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
 
             <div class="d-grid gap-2 d-md-block">
                 <button class="btn btn-success">Salvar</button>
@@ -45,6 +53,7 @@
                         <th>Ação</th>
                         <th>Título</th>
                         <th>Slug</th>
+                        <th>Categoria</th>
                         <th>Imagem</th>
                         <th>Autor</th>
                         <th>Status</th>

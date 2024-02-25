@@ -12,6 +12,11 @@
         </a>
     </li>
     <li class="nav-item">
+        <a class="nav-link" href="<?= BASE; ?>admin/categories">
+            <i class="fas fa-list"></i> Categorias
+        </a>
+    </li>
+    <li class="nav-item">
         <a class="nav-link" href="<?= BASE; ?>admin/posts">
             <i class="fas fa-address-card"></i> Posts
         </a>
