@@ -9,11 +9,13 @@ class BackupsController extends BaseController
     private $BackupModel;
     public $title = "Backups";
     public $page = "backups";
+    protected $db;
 
     public function __construct($db, $config)
     {
         parent::__construct();
         $this->BackupModel = new BackupModel($db, $config);
+        $this->db = $db;
     }
 
     /**
@@ -21,6 +23,16 @@ class BackupsController extends BaseController
      */
     public function index($edit = "", $del = "")
     {
+        if (!$this->hasPermission($this->getUser($this->db), "view")) {
+            $_SESSION['alert'] = [
+                "status"    => false,
+                "message"   => "Você não tem permissão de acesso!",
+                "class"     => "warning"
+            ];
+            header('Location: ' . BASE . 'admin');
+            exit;
+        }
+        
         $list = $this->BackupModel->getAll();
 
         ob_start();
@@ -36,7 +48,18 @@ class BackupsController extends BaseController
      */
     public function action($request = "", $del = "")
     {
+        // register
         if (!empty($request)) {
+            if (!$this->hasPermission($this->getUser($this->db), "register")) {
+                $_SESSION['alert'] = [
+                    "status"    => false,
+                    "message"   => "Você não tem permissão de acesso!",
+                    "class"     => "warning"
+                ];
+                header('Location: ' . BASE . 'admin/' . $this->page);
+                exit;
+            }
+
             $nameFile = date('y-m-d-H-i-s') . rand(99, 999) . '.sql';
             $params = [
                 "path" => $this->pathBackups . $nameFile
@@ -64,6 +87,16 @@ class BackupsController extends BaseController
         }
 
         if (!empty($del)) {
+            if (!$this->hasPermission($this->getUser($this->db), "destroy")) {
+                $_SESSION['alert'] = [
+                    "status"    => false,
+                    "message"   => "Você não tem permissão de acesso!",
+                    "class"     => "warning"
+                ];
+                header('Location: ' . BASE . 'admin/' . $this->page);
+                exit;
+            }
+
             $find = $this->BackupModel->find($del);
             var_dump($find);
 

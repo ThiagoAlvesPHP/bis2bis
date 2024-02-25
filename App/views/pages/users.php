@@ -25,6 +25,15 @@
                 <input type="password" class="form-control" id="password" name="password">
             </div>
 
+            <div class="mb-3">
+                <label for="password" class="form-label">Permissões</label>
+                <select class="form-select" name="permissions[]" multiple aria-label="Multiple select example">
+                    <?php foreach ($menus as $value) : ?>
+                        <option value="<?= $value['id']; ?>"><?= $value['name'] . " | " . $value['action']; ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
             <div class="d-grid gap-2 d-md-block">
                 <button class="btn btn-success">Salvar</button>
             </div>
@@ -69,6 +78,15 @@
                                                         <div class="mb-3">
                                                             <label for="password" class="form-label">Senha</label>
                                                             <input type="password" class="form-control" id="password" name="password">
+                                                        </div>
+
+                                                        <div class="mb-3">
+                                                            <label for="password" class="form-label">Permissões</label>
+                                                            <select class="form-select" name="permissions[]" multiple aria-label="Multiple select example">
+                                                                <?php foreach ($item['menus'] as $value) : ?>
+                                                                    <option <?= $value['status'] ? "selected" : ""; ?> value="<?= $value['id']; ?>"><?= $value['name'] . " | " . $value['action']; ?></option>
+                                                                <?php endforeach; ?>
+                                                            </select>
                                                         </div>
 
                                                         <div class="form-check form-switch">

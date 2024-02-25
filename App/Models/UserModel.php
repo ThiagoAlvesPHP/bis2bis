@@ -60,12 +60,14 @@ class UserModel
             $fields[] = "$key=:$key";
         }
         $fields = implode(', ', $fields);
-        $sql = $this->db->prepare("INSERT INTO " . self::TABLE . " SET {$fields}");
+        $statement = $this->db->prepare("INSERT INTO " . self::TABLE . " SET {$fields}");
 
         foreach ($params as $key => $value) {
-            $sql->bindValue(":{$key}", $value);
+            $statement->bindValue(":{$key}", $value);
         }
-        $sql->execute();
+        $statement->execute();
+
+        return $this->db->lastInsertId();
     }
 
     /**
@@ -95,7 +97,13 @@ class UserModel
     {
         $statement = $this->db->prepare("SELECT * FROM " . self::TABLE . " ORDER BY name ASC");
         $statement->execute();
-        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+
+        foreach ($data as $key => $value) {
+            $data[$key]['menus'] = (new MenusModel($this->db))->getAllActivesByUser($value['id']);
+        }
+
+        return $data;
     }
 
     /**
@@ -107,7 +115,11 @@ class UserModel
         $statement = $this->db->prepare("SELECT * FROM " . self::TABLE . " WHERE id = :id");
         $statement->bindValue(':id', $id);
         $statement->execute();
-        return $statement->fetch(\PDO::FETCH_ASSOC);
+        $user = $statement->fetch(\PDO::FETCH_ASSOC);
+        $permissions = (new PermissionsModel($this->db))->getAllUser($id);
+        $user['menus'] = $permissions;
+
+        return $user;
     }
 
     /**

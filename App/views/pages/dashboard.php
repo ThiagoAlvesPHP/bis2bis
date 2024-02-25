@@ -1,4 +1,11 @@
 <h1><?= $this->title; ?></h1>
+<?php if (!empty($_SESSION['alert'])) : ?>
+    <div class="alert alert-<?= $_SESSION['alert']['class'] ?? ""; ?> <?= $_SESSION['alert']['status'] ? "logado" : ""; ?> d-flex align-items-center" role="alert">
+        <div>
+            <?= $_SESSION['alert']['message'] ?? ""; ?>
+        </div>
+    </div>
+<?php endif; ?>
 <div class="row">
     <div class="col">
         <div class="card">

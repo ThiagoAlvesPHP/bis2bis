@@ -9,11 +9,13 @@ class CategoriesController extends BaseController
     private $CategoryModel;
     public $title = "Categorias";
     public $page = "categories";
+    protected $db;
 
     public function __construct($db)
     {
         parent::__construct();
         $this->CategoryModel = new CategoryModel($db);
+        $this->db = $db;
     }
 
     /**
@@ -21,6 +23,16 @@ class CategoriesController extends BaseController
      */
     public function index($edit = "", $del = "")
     {
+        if (!$this->hasPermission($this->getUser($this->db), "view")) {
+            $_SESSION['alert'] = [
+                "status"    => false,
+                "message"   => "Você não tem permissão de acesso!",
+                "class"     => "warning"
+            ];
+            header('Location: ' . BASE . 'admin');
+            exit;
+        }
+
         $list = $this->CategoryModel->getAll();
 
         ob_start();
@@ -36,7 +48,18 @@ class CategoriesController extends BaseController
      */
     public function action($id = "")
     {
+        // update
         if (!empty($id)) {
+            if (!$this->hasPermission($this->getUser($this->db), "edit")) {
+                $_SESSION['alert'] = [
+                    "status"    => false,
+                    "message"   => "Você não tem permissão de acesso!",
+                    "class"     => "warning"
+                ];
+                header('Location: ' . BASE . 'admin/' . $this->page);
+                exit;
+            }
+
             $find = $this->CategoryModel->find($id);
             $this->post['id'] = $id;
 
@@ -58,7 +81,20 @@ class CategoriesController extends BaseController
             ];
             header('Location: ' . BASE . 'admin/' . $this->page);
             exit;
-        } else {
+        }
+
+        // register
+        else {
+            if (!$this->hasPermission($this->getUser($this->db), "register")) {
+                $_SESSION['alert'] = [
+                    "status"    => false,
+                    "message"   => "Você não tem permissão de acesso!",
+                    "class"     => "warning"
+                ];
+                header('Location: ' . BASE . 'admin/' . $this->page);
+                exit;
+            }
+
             $this->CategoryModel->set($this->post);
             $_SESSION['alert'] = [
                 "status"    => true,

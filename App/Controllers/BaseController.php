@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Models\UserModel;
+
 class BaseController
 {
     protected $post;
@@ -9,6 +11,7 @@ class BaseController
     protected $typeImages;
     protected $pathImagePost;
     protected $pathBackups;
+    private $UserModel;
 
     public function __construct()
     {
@@ -31,5 +34,30 @@ class BaseController
         if (!empty($_SESSION['alert'])) {
             unset($_SESSION['alert']);
         }
+    }
+
+    /**
+     * data user logado
+     */
+    public function getUser($db)
+    {
+        $UserModel = new UserModel($db);
+        return $UserModel->find($_SESSION['user']);
+    }
+
+    /**
+     * hasPermission
+     */
+    public function hasPermission($data, $action)
+    {
+        $urlToCheck = $this->get['url'];
+
+        foreach ($data['menus'] as $menu) {
+            if ($menu['url'] == $urlToCheck && isset($menu['action']) && $menu['action'] == $action) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

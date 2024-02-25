@@ -13,6 +13,7 @@ class PostsController extends BaseController
     private $UserModel;
     public $title = "Posts";
     public $page = "posts";
+    protected $db;
 
     public function __construct($db)
     {
@@ -20,6 +21,7 @@ class PostsController extends BaseController
         $this->CategoryModel = new CategoryModel($db);
         $this->PostModel = new PostModel($db);
         $this->UserModel = new UserModel($db);
+        $this->db = $db;
     }
 
     /**
@@ -29,7 +31,7 @@ class PostsController extends BaseController
     {
         $find = $this->PostModel->findBySlug($slug);
         $this->title = $find['title'];
-        
+
         ob_start();
         include __DIR__ . '/../views/post.php';
         $content = ob_get_clean();
@@ -41,10 +43,30 @@ class PostsController extends BaseController
      */
     public function index($edit = "", $del = "")
     {
+        if (!$this->hasPermission($this->getUser($this->db), "view")) {
+            $_SESSION['alert'] = [
+                "status"    => false,
+                "message"   => "Você não tem permissão de acesso!",
+                "class"     => "warning"
+            ];
+            header('Location: ' . BASE . 'admin');
+            exit;
+        }
+
         $find = (!empty($edit)) ? $this->PostModel->find($edit) : false;
         $categories = $this->CategoryModel->getAll();
 
         if (!empty($del)) {
+            if (!$this->hasPermission($this->getUser($this->db), "destroy")) {
+                $_SESSION['alert'] = [
+                    "status"    => false,
+                    "message"   => "Você não tem permissão de acesso!",
+                    "class"     => "warning"
+                ];
+                header('Location: ' . BASE . 'admin/' . $this->page);
+                exit;
+            }
+
             $find = (!empty($del)) ? $this->PostModel->find($del) : false;
             if (empty($find)) {
                 $_SESSION['alert'] = [
@@ -82,7 +104,18 @@ class PostsController extends BaseController
      */
     public function action($id = "")
     {
+        // update
         if (!empty($id)) {
+            if (!$this->hasPermission($this->getUser($this->db), "edit")) {
+                $_SESSION['alert'] = [
+                    "status"    => false,
+                    "message"   => "Você não tem permissão de acesso!",
+                    "class"     => "warning"
+                ];
+                header('Location: ' . BASE . 'admin/' . $this->page);
+                exit;
+            }
+
             $find = $this->PostModel->find($id);
             $this->post['id'] = $id;
 
@@ -136,7 +169,19 @@ class PostsController extends BaseController
             ];
             header('Location: ' . BASE . 'admin/' . $this->page);
             exit;
-        } else {
+        }
+        // regiter
+        else {
+            if (!$this->hasPermission($this->getUser($this->db), "register")) {
+                $_SESSION['alert'] = [
+                    "status"    => false,
+                    "message"   => "Você não tem permissão de acesso!",
+                    "class"     => "warning"
+                ];
+                header('Location: ' . BASE . 'admin/' . $this->page);
+                exit;
+            }
+
             if (empty($_FILES['image'])) {
                 $_SESSION['alert'] = [
                     "status"    => false,
