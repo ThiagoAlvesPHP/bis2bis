@@ -25,8 +25,11 @@ class PostsController extends BaseController
     /**
      * view post site
      */
-    public function show($postId)
+    public function show($slug)
     {
+        $find = $this->PostModel->findBySlug($slug);
+        $this->title = $find['title'];
+        
         ob_start();
         include __DIR__ . '/../views/post.php';
         $content = ob_get_clean();

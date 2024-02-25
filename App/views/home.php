@@ -3,7 +3,7 @@
         <!-- Featured blog post-->
         <?php if (!$name_category) : ?>
             <div class="card mb-4">
-                <a href="#!">
+                <a href="<?= BASE . 'post?slug=' . $postRand['slug']; ?>">
                     <img class="card-img-top" src="<?= $postRand['image']; ?>" alt="<?= $postRand['title']; ?>" />
                 </a>
                 <div class="card-body">
@@ -11,7 +11,7 @@
                     <div class="small text-muted">Categoria: <?= $postRand['name_category']; ?></div>
                     <h2 class="card-title"><?= $postRand['title']; ?></h2>
                     <p class="card-text"><?= substr($postRand['text'], 0, 100); ?></p>
-                    <a class="btn btn-primary" href="#!"><i class="fas fa-eye"></i></a>
+                    <a class="btn btn-primary" href="<?= BASE . 'post?slug=' . $postRand['slug']; ?>"><i class="fas fa-eye"></i></a>
                 </div>
             </div>
         <?php endif; ?>
@@ -21,7 +21,7 @@
             <?php foreach ($posts as $post) : ?>
                 <div class="col-lg-6">
                     <div class="card mb-4">
-                        <a href="#!">
+                        <a href="<?= BASE . 'post?slug=' . $post['slug']; ?>">
                             <img class="card-img-top" src="<?= $post['image']; ?>" alt="..." />
                         </a>
                         <div class="card-body">
@@ -29,7 +29,7 @@
                             <div class="small text-muted">Categoria: <?= $post['name_category']; ?></div>
                             <h2 class="card-title h4"><?= $post['title']; ?></h2>
                             <p class="card-text"><?= substr($post['text'], 0, 100); ?></p>
-                            <a class="btn btn-primary" href="#!"><i class="fas fa-eye"></i></a>
+                            <a class="btn btn-primary" href="<?= BASE . 'post?slug=' . $post['slug']; ?>"><i class="fas fa-eye"></i></a>
                         </div>
                     </div>
                 </div>

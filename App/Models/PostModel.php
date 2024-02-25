@@ -93,6 +93,17 @@ class PostModel
         $statement->execute();
         return $statement->fetch(\PDO::FETCH_ASSOC);
     }
+    /**
+     * get find post by slug
+     * @param string $slug
+     */
+    public function findBySlug($slug)
+    {
+        $statement = $this->db->prepare("SELECT p.*, u.name as user_name, c.name as name_category FROM " . self::TABLE . " as p LEFT JOIN " . UserModel::TABLE . " as u ON p.user_id = u.id LEFT JOIN " . CategoryModel::TABLE . " as c ON p.category_id = c.id WHERE p.slug = :slug");
+        $statement->bindValue(':slug', $slug);
+        $statement->execute();
+        return $statement->fetch(\PDO::FETCH_ASSOC);
+    }
 
     /**
      * destroy find post by ID
