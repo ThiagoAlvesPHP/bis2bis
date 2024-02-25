@@ -8,6 +8,7 @@ class BaseController
     protected $get;
     protected $typeImages;
     protected $pathImagePost;
+    protected $pathBackups;
 
     public function __construct()
     {
@@ -19,6 +20,7 @@ class BaseController
             "image/jpg"
         ];
         $this->pathImagePost = "App/web/images/posts/";
+        $this->pathBackups = "App/web/backup/";
     }
 
     /**

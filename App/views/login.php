@@ -20,10 +20,6 @@
             <label for="password" class="form-label">Senha</label>
             <input type="password" class="form-control" required name="password" id="password">
         </div>
-        <!-- <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-            <label class="form-check-label" for="exampleCheck1">Check me out</label>
-        </div> -->
         <p class="small"><a class="text-primary" href="<?= BASE; ?>">Esqueceu sua senha?</a></p>
         <button type="submit" class="btn btn-primary">Login</button>
     </form>

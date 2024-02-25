@@ -93,7 +93,7 @@ class UserModel
      */
     public function getAll()
     {
-        $statement = $this->db->prepare("SELECT * FROM " . self::TABLE);
+        $statement = $this->db->prepare("SELECT * FROM " . self::TABLE . " ORDER BY name ASC");
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }

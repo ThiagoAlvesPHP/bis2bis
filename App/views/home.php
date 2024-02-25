@@ -1,7 +1,7 @@
-<div class="row">
+<div class="row" style="margin-top: 20px;">
     <div class="col-lg-8">
         <!-- Featured blog post-->
-        <?php if (!$name_category) : ?>
+        <?php if (!$name_category && !$search) : ?>
             <div class="card mb-4">
                 <a href="<?= BASE . 'post?slug=' . $postRand['slug']; ?>">
                     <img class="card-img-top" src="<?= $postRand['image']; ?>" alt="<?= $postRand['title']; ?>" />
@@ -16,6 +16,9 @@
             </div>
         <?php endif; ?>
         <!-- Nested row for non-featured blog posts-->
+
+        <?= $search ? '<h4><i class="fas fa-search"></i> Pesquisa: ' . $search . '<h4>' : ""; ?>
+        <?= $name_category ? '<h4><i class="fas fa-search"></i> Categoria: ' . $name_category . '<h4>' : ""; ?>
 
         <div class="row">
             <?php foreach ($posts as $post) : ?>
@@ -40,12 +43,16 @@
     <div class="col-lg-4">
         <!-- Search widget-->
         <div class="card mb-4">
-            <div class="card-header">Search</div>
+            <div class="card-header">Pesquisar</div>
             <div class="card-body">
-                <div class="input-group">
-                    <input class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
-                    <button class="btn btn-primary" id="button-search" type="button">Go!</button>
-                </div>
+                <form action="<?= BASE; ?>" method="GET">
+                    <div class="input-group">
+                        <input class="form-control" name="search" type="text" placeholder="Procurar post..." aria-label="Enter search term..." aria-describedby="button-search" />
+                        <button class="btn btn-primary" id="button-search">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
         <!-- Categories widget-->

@@ -196,8 +196,7 @@ class PostsController extends BaseController
             array(3 => 'category_id'),
             array(4 => 'image'),
             array(5 => 'user_id'),
-            array(6 => 'is_active'),
-            array(7 => 'created_at'),
+            array(6 => 'created_at'),
         );
 
         $sql = "SELECT p.*, u.name as name_user , c.name as name_category
@@ -213,7 +212,6 @@ class PostsController extends BaseController
             $sql .= " OR p.title LIKE '%" . $requestData['search']['value'] . "%' ";
             $sql .= " OR p.slug LIKE '%" . $requestData['search']['value'] . "%' ";
             $sql .= " OR u.name LIKE '%" . $requestData['search']['value'] . "%' ";
-            $sql .= " OR p.is_active LIKE '%" . $requestData['search']['value'] . "%' ";
             $sql .= " OR c.name LIKE '%" . $requestData['search']['value'] . "%' ";
             $sql .= " OR p.created_at LIKE '%" . $requestData['search']['value'] . "%' )";
         }
@@ -237,7 +235,6 @@ class PostsController extends BaseController
             $item[] = $value["name_category"];
             $item[] = '<img width="30" src="' . BASE . $value["image"] . '" class="rounded mx-auto d-block" alt="' . $value['title'] . '">';
             $item[] = $value["name_user"];
-            $item[] = $value["is_active"] ? "Ativo" : "Inativo";
             $item[] = $value["created_at"];
             $items[] = $item;
         }

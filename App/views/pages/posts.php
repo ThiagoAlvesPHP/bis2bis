@@ -56,7 +56,6 @@
                         <th>Categoria</th>
                         <th>Imagem</th>
                         <th>Autor</th>
-                        <th>Status</th>
                         <th>Registrado em</th>
                     </tr>
                 </thead>

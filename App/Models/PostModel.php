@@ -55,12 +55,20 @@ class PostModel
     /**
      * list posts
      */
-    public function getAll($limit = "", $category_id = "")
+    public function getAll($limit = "", $category_id = "", $search = "")
     {
         $statement = "SELECT p.*, u.name as user_name, c.name as name_category FROM " . self::TABLE . " as p LEFT JOIN " . UserModel::TABLE . " as u ON p.user_id = u.id LEFT JOIN " . CategoryModel::TABLE . " as c ON p.category_id = c.id";
 
         if (!empty($category_id)) {
             $statement .= " WHERE p.category_id = " . $category_id;
+        }
+
+        if (!empty($search)) {
+            $statement .= " WHERE p.title LIKE '%{$search}%'";
+            $statement .= " || p.slug LIKE '%{$search}%'";
+            $statement .= " || p.text LIKE '%{$search}%'";
+            $statement .= " || c.name LIKE '%{$search}%'";
+            $statement .= " || u.name LIKE '%{$search}%'";
         }
 
         if (!empty($limit)) {

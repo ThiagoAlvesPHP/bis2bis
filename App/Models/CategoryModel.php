@@ -13,43 +13,6 @@ class CategoryModel
     }
 
     /**
-     * auth login
-     * @param array $creds
-     */
-    public function auth($creds)
-    {
-        $statement = $this->db->prepare("SELECT * FROM " . self::TABLE . " WHERE email = :email");
-        $statement->bindValue(':email', $creds['email']);
-        $statement->execute();
-
-        if ($statement->rowCount() === 0) {
-            return [
-                "status"    => false,
-                "message"   => "E-mail não registrado!",
-                "class"     => "danger"
-            ];
-        }
-
-        $data = $statement->fetch(\PDO::FETCH_ASSOC);
-
-        if ($data['password'] != md5($creds['password'])) {
-            return [
-                "status"    => false,
-                "message"   => "Senha incorreta!",
-                "class"     => "danger"
-            ];
-        }
-
-        $_SESSION['user'] = $data['id'];
-
-        return [
-            "status"    => true,
-            "message"   => "Logado com sucesso!",
-            "class"     => "success"
-        ];
-    }
-
-    /**
      * register
      * @param array $params
      */
@@ -93,7 +56,7 @@ class CategoryModel
      */
     public function getAll()
     {
-        $statement = $this->db->prepare("SELECT * FROM " . self::TABLE);
+        $statement = $this->db->prepare("SELECT * FROM " . self::TABLE . " ORDER BY id DESC");
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }

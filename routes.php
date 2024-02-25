@@ -2,7 +2,7 @@
 switch ($route) {
     case 'home':
         $controller = new App\Controllers\HomeController($db);
-        $controller->index($_GET['name_category'] ?? null);
+        $controller->index($_GET['name_category'] ?? null, $_GET['search'] ?? null);
         break;
     case 'post':
         $controller = new App\Controllers\PostsController($db);
@@ -57,6 +57,16 @@ switch ($route) {
         $authMiddleware->handle();
         $controller = new App\Controllers\PostsController($db);
         $controller->ajax();
+        break;
+    case 'admin/backups':
+        $authMiddleware->handle();
+        $controller = new App\Controllers\BackupsController($db, $config);
+        $controller->index();
+        break;
+    case 'admin/backups/action':
+        $authMiddleware->handle();
+        $controller = new App\Controllers\BackupsController($db, $config);
+        $controller->action($_GET['request'] ?? null, $_GET['del'] ?? null);
         break;
         // end admin
 

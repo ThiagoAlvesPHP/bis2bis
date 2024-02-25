@@ -21,4 +21,9 @@
             <i class="fas fa-address-card"></i> Posts
         </a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link" href="<?= BASE; ?>admin/backups">
+            <i class="fas fa-database"></i> Backup DB
+        </a>
+    </li>
 </ul>
