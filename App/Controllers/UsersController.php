@@ -25,6 +25,40 @@ class UsersController extends BaseController
     }
 
     /**
+     * show
+     */
+    public function show()
+    {
+        $this->title = "Perfil";
+        $find = $this->UserModel->find($_SESSION['user']);
+
+        if (!empty($this->post['name'])) {
+            $this->post['id'] = $_SESSION['user'];
+            if (!empty($this->post['password'])) {
+                $this->post['password'] = md5($this->post['password']);
+            }
+
+            $params = array_filter($this->post);
+
+            $this->UserModel->update($params);
+            $_SESSION['alert'] = [
+                "status"    => false,
+                "message"   => "Atualizado com sucesso!",
+                "class"     => "success"
+            ];
+            header('Location: ' . BASE . 'profile');
+            exit;
+        }
+
+        ob_start();
+        include __DIR__ . '/../views/user.php';
+        $content = ob_get_clean();
+        include __DIR__ . '/../views/template.php';
+
+        $this->cleanAlert();
+    }
+
+    /**
      * view admin user
      */
     public function index()
@@ -57,15 +91,15 @@ class UsersController extends BaseController
     {
         // update
         if (!empty($id)) {
-            // if (!$this->hasPermission($this->getUser($this->db), "edit")) {
-            //     $_SESSION['alert'] = [
-            //         "status"    => false,
-            //         "message"   => "Você não tem permissão de acesso!",
-            //         "class"     => "warning"
-            //     ];
-            //     header('Location: ' . BASE . 'admin/' . $this->page);
-            //     exit;
-            // }
+            if (!$this->hasPermission($this->getUser($this->db), "edit")) {
+                $_SESSION['alert'] = [
+                    "status"    => false,
+                    "message"   => "Você não tem permissão de acesso!",
+                    "class"     => "warning"
+                ];
+                header('Location: ' . BASE . 'admin/' . $this->page);
+                exit;
+            }
 
             if (!empty($this->post['password'])) {
                 $this->post['password'] = md5($this->post['password']);

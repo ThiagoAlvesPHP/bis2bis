@@ -1,7 +1,12 @@
 <div class="row" style="margin-top: 20px;">
     <div class="col-lg-8">
+        <?php if (empty($postRand)) : ?>
+            <div class="alert alert-warning">
+                Nenhum publicação existente!
+            </div>
+        <?php endif; ?>
         <!-- Featured blog post-->
-        <?php if (!$name_category && !$search) : ?>
+        <?php if (!$name_category && !$search && !empty($postRand)) : ?>
             <div class="card mb-4">
                 <a href="<?= BASE . 'post?slug=' . $postRand['slug']; ?>">
                     <img class="card-img-top" src="<?= $postRand['image']; ?>" alt="<?= $postRand['title']; ?>" />

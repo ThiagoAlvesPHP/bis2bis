@@ -20,9 +20,30 @@ class AuthController extends BaseController
      */
     public function index()
     {
-        if (!empty($this->post)) {
+        $url = $this->get["url"];
+        $this->title = ($url == "register") ? "Cadastre-se" : "Login";
+
+        if (!empty($this->post) && $url == "login") {
             $data = $this->auth($this->post);
             $_SESSION['alert'] = $data;
+            header('Location: ' . BASE . 'login');
+            exit;
+        }
+
+        if (!empty($this->post) && $url == "register") {
+            $this->post['password'] = md5($this->post['password']);
+            $params = [
+                "name"      => $this->post['name'],
+                "email"     => $this->post['email'],
+                "password"  => $this->post['password']
+            ];
+
+            $this->UserModel->set($params);
+            $_SESSION['alert'] = [
+                "status"    => true,
+                "message"   => "Registrado com sucesso, Faça login agora!",
+                "class"     => "success"
+            ];
             header('Location: ' . BASE . 'login');
             exit;
         }

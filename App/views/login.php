@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="<?= BASE; ?>/../App/web/css/login.css">
 
 <div class="row login">
-    <h1 class="text-center">Login</h1>
+    <h1 class="text-center"><?= $this->title; ?></h1>
 
     <form method="POST">
         <?php if (!empty($_SESSION['alert'])) : ?>
@@ -9,6 +9,12 @@
                 <div>
                     <?= $_SESSION['alert']['message'] ?? ""; ?>
                 </div>
+            </div>
+        <?php endif; ?>
+        <?php if ($url == "register") : ?>
+            <div class="mb-3">
+                <label for="name" class="form-label">Nome</label>
+                <input type="text" class="form-control" required name="name" id="name">
             </div>
         <?php endif; ?>
         <div class="mb-3">
@@ -20,8 +26,7 @@
             <label for="password" class="form-label">Senha</label>
             <input type="password" class="form-control" required name="password" id="password">
         </div>
-        <p class="small"><a class="text-primary" href="<?= BASE; ?>">Esqueceu sua senha?</a></p>
-        <button type="submit" class="btn btn-primary">Login</button>
+        <button type="submit" class="btn btn-primary"><?= $this->title; ?></button>
     </form>
 </div>
 

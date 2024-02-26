@@ -4,7 +4,7 @@ error_reporting(E_ALL);
 setlocale(LC_TIME, "pt_BR", "pt_BR.utf-8", "portuguese");
 date_default_timezone_set('America/Sao_Paulo');
 $config = array();
-$define = "development";
+$define = "development"; //production
 // ini_set("display_errors", ($define == "development") ? "Off" : "On");
 ini_set("display_errors", "On");
 define("BASE", "http://localhost/bis2bis/");

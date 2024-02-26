@@ -16,9 +16,23 @@ class AuthMiddleware
 
     public function handle()
     {
-        // Verificar se o usuário está autenticado
+        // verifica se usuario esta logado
         if (!isset($_SESSION['user'])) {
-            // Redirecionar para a página de login ou executar ação adequada
+            header("Location: " . BASE . "login");
+            exit;
+        }
+
+        // verifica o tipo de usuario
+        if (!empty($_SESSION['user_data']) && !$_SESSION['user_data']['master']) {
+            header("Location: " . BASE);
+            exit;
+        }
+    }
+
+    public function handleVisitor()
+    {
+        // verifica se usuario esta logado
+        if (!isset($_SESSION['user'])) {
             header("Location: " . BASE . "login");
             exit;
         }

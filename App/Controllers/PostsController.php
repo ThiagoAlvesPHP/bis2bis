@@ -3,12 +3,14 @@
 namespace App\Controllers;
 
 use App\Models\CategoryModel;
+use App\Models\PostsCommentsModel;
 use App\Models\PostModel;
 use App\Models\UserModel;
 
 class PostsController extends BaseController
 {
     private $CategoryModel;
+    private $PostsCommentsModel;
     private $PostModel;
     private $UserModel;
     public $title = "Posts";
@@ -19,6 +21,7 @@ class PostsController extends BaseController
     {
         parent::__construct();
         $this->CategoryModel = new CategoryModel($db);
+        $this->PostsCommentsModel = new PostsCommentsModel($db);
         $this->PostModel = new PostModel($db);
         $this->UserModel = new UserModel($db);
         $this->db = $db;
@@ -31,11 +34,39 @@ class PostsController extends BaseController
     {
         $find = $this->PostModel->findBySlug($slug);
         $this->title = $find['title'];
+        $comments = $this->PostsCommentsModel->getAll($find['id']);
+
+        if (!empty($this->post['text'])) {
+            $this->post['user_id'] = $_SESSION['user'];
+            $this->post['post_id'] = $find['id'];
+
+            $this->PostsCommentsModel->set($this->post);
+            $_SESSION['alert'] = [
+                "status"    => false,
+                "message"   => "Atualizado com sucesso!",
+                "class"     => "success"
+            ];
+            header('Location: ' . BASE . 'post?slug=' . $slug);
+            exit;
+        }
+
+        if (!empty($this->get['comment'])) {
+            $this->PostsCommentsModel->destroy($this->get['comment']);
+            $_SESSION['alert'] = [
+                "status"    => true,
+                "message"   => "Deletado com sucesso!",
+                "class"     => "success"
+            ];
+            header('Location: ' . BASE . 'post?slug=' . $slug);
+            exit;
+        }
 
         ob_start();
         include __DIR__ . '/../views/post.php';
         $content = ob_get_clean();
         include __DIR__ . '/../views/template.php';
+
+        $this->cleanAlert();
     }
 
     /**
@@ -81,6 +112,7 @@ class PostsController extends BaseController
             if (file_exists($find['image'])) {
                 unlink($find['image']);
             }
+            $this->PostsCommentsModel->destroyPostID($del);
             $this->PostModel->destroy($del);
             $_SESSION['alert'] = [
                 "status"    => false,

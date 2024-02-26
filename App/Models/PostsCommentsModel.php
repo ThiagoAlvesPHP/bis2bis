@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-class CategoryModel
+class PostsCommentsModel
 {
-    const TABLE = "categories";
+    const TABLE = "posts_comments";
     private $db;
 
     public function __construct($db)
@@ -23,12 +23,14 @@ class CategoryModel
             $fields[] = "$key=:$key";
         }
         $fields = implode(', ', $fields);
-        $sql = $this->db->prepare("INSERT INTO " . self::TABLE . " SET {$fields}");
+        $statement = $this->db->prepare("INSERT INTO " . self::TABLE . " SET {$fields}");
 
         foreach ($params as $key => $value) {
-            $sql->bindValue(":{$key}", $value);
+            $statement->bindValue(":{$key}", $value);
         }
-        $sql->execute();
+        $statement->execute();
+
+        return $this->db->lastInsertId();
     }
 
     /**
@@ -54,22 +56,40 @@ class CategoryModel
     /**
      * list users
      */
-    public function getAll()
+    public function getAll($post_id)
     {
-        $statement = $this->db->prepare("SELECT * FROM " . self::TABLE . " ORDER BY id DESC");
+        $statement = $this->db->prepare("SELECT pc.*, u.name as user_name
+            FROM " . self::TABLE . " as pc
+            LEFT JOIN " . UserModel::TABLE . " as u
+            ON pc.user_id = u.id
+            WHERE post_id = :post_id
+            ORDER BY name ASC");
+        $statement->bindValue(':post_id', $post_id);
         $statement->execute();
-        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
+
+        return $data;
     }
 
     /**
-     * get find user by ID
+     * destroy find by ID
      * @param int $id
      */
-    public function find($id)
+    public function destroy($id)
     {
-        $statement = $this->db->prepare("SELECT * FROM " . self::TABLE . " WHERE id = :id");
+        $statement = $this->db->prepare("DELETE FROM " . self::TABLE . " WHERE id = :id");
         $statement->bindValue(':id', $id);
         $statement->execute();
-        return $statement->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * destroy find post by ID
+     * @param int $id
+     */
+    public function destroyPostID($post_id)
+    {
+        $statement = $this->db->prepare("DELETE FROM " . self::TABLE . " WHERE post_id = :post_id");
+        $statement->bindValue(':post_id', $post_id);
+        $statement->execute();
     }
 }

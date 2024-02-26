@@ -16,6 +16,15 @@ switch ($route) {
         $controller = new App\Controllers\AuthController($db);
         $controller->logout();
         break;
+    case 'register':
+        $controller = new App\Controllers\AuthController($db);
+        $controller->index();
+        break;
+    case 'profile':
+        $authMiddleware->handleVisitor();
+        $controller = new App\Controllers\UsersController($db);
+        $controller->show();
+        break;
 
         // init Admin
     case 'admin':
