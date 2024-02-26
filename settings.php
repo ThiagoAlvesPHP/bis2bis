@@ -5,13 +5,13 @@ setlocale(LC_TIME, "pt_BR", "pt_BR.utf-8", "portuguese");
 date_default_timezone_set('America/Sao_Paulo');
 ini_set("display_errors", "On");
 // URL route project
-define("BASE", "http://localhost/bis2bis/");
+define("BASE", "https://ltdeveloper.com.br/projects/bis2bis/");
 
 $config = array();
 $config['host']     = "localhost";
-$config['dbname']   = "bis2bis";
-$config['dbuser']   = "root";
-$config['dbpass']   = "root";
+$config['dbname']   = "adelso17_teste";
+$config['dbuser']   = "adelso17_ltdeveloper";
+$config['dbpass']   = "211085100705";
 
 global $db;
 global $config;

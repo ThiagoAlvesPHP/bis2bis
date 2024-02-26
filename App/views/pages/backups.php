@@ -30,7 +30,7 @@
                             </a>
                         </td>
                         <td>
-                            <a href="<?= BASE . $item['path']; ?>" class="link-success link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Download</a>
+                            <a href="<?= BASE . $item['path']; ?>" class="link-success link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" download>Download</a>
                         </td>
                         <td><?= date('d/m/Y H:i:s', strtotime($item['created_at'])); ?></td>
                     </tr>

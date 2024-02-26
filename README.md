@@ -39,3 +39,7 @@ git clone https://github.com/ThiagoAlvesPHP/bis2bis
 
 ## Execução:
 * Acesse o projeto através do seu navegador.
+
+## Login Usuário Master
+* E-mail: thiagoalves@ltdeveloper.com.br
+* Password: admin123
