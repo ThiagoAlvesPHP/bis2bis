@@ -50,6 +50,7 @@
                             <th scope="col">Nome</th>
                             <th scope="col">E-mail</th>
                             <th scope="col">Status</th>
+                            <th scope="col">Tipo</th>
                         </tr>
                     </thead>
                     <?php foreach ($list as $item) : ?>
@@ -80,14 +81,16 @@
                                                             <input type="password" class="form-control" id="password" name="password">
                                                         </div>
 
-                                                        <div class="mb-3">
-                                                            <label for="password" class="form-label">Permissões</label>
-                                                            <select class="form-select" name="permissions[]" multiple aria-label="Multiple select example">
-                                                                <?php foreach ($item['menus'] as $value) : ?>
-                                                                    <option <?= $value['status'] ? "selected" : ""; ?> value="<?= $value['id']; ?>"><?= $value['name'] . " | " . $value['action']; ?></option>
-                                                                <?php endforeach; ?>
-                                                            </select>
-                                                        </div>
+                                                        <?php if ($item['master']) : ?>
+                                                            <div class="mb-3">
+                                                                <label for="password" class="form-label">Permissões</label>
+                                                                <select class="form-select" name="permissions[]" multiple aria-label="Multiple select example">
+                                                                    <?php foreach ($item['menus'] as $value) : ?>
+                                                                        <option <?= $value['status'] ? "selected" : ""; ?> value="<?= $value['id']; ?>"><?= $value['name'] . " | " . $value['action']; ?></option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                            </div>
+                                                        <?php endif; ?>
 
                                                         <div class="form-check form-switch">
                                                             <input class="form-check-input" <?= $item['is_active'] ? "checked" : ""; ?> type="checkbox" role="switch" name="is_active" id="is_active<?= $item['id']; ?>">
@@ -105,6 +108,7 @@
                                 <td><?= $item['name']; ?></td>
                                 <td><?= $item['email']; ?></td>
                                 <td><?= $item['is_active'] ? "Ativo" : "Inativo"; ?></td>
+                                <td><?= $item['master'] ? "Administrativo" : "Visitante"; ?></td>
                             </tr>
                         </tbody>
                     <?php endforeach; ?>

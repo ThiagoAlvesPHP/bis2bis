@@ -63,7 +63,7 @@ class PostsCommentsModel
             LEFT JOIN " . UserModel::TABLE . " as u
             ON pc.user_id = u.id
             WHERE post_id = :post_id
-            ORDER BY name ASC");
+            ORDER BY id DESC");
         $statement->bindValue(':post_id', $post_id);
         $statement->execute();
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);

@@ -167,7 +167,8 @@ class UsersController extends BaseController
             $params = [
                 "name"      => $this->post['name'],
                 "email"     => $this->post['email'],
-                "password"  => $this->post['password']
+                "password"  => $this->post['password'],
+                "master"    => true
             ];
 
             $user_id = $this->UserModel->set($params);
