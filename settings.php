@@ -3,15 +3,15 @@ session_start();
 error_reporting(E_ALL);
 setlocale(LC_TIME, "pt_BR", "pt_BR.utf-8", "portuguese");
 date_default_timezone_set('America/Sao_Paulo');
-$config = array();
-$define = "development"; //production
-// ini_set("display_errors", ($define == "development") ? "Off" : "On");
 ini_set("display_errors", "On");
+// URL route project
 define("BASE", "http://localhost/bis2bis/");
-$config['host'] = "localhost";
-$config['dbname'] = "bis2bis";
-$config['dbuser'] = "root";
-$config['dbpass'] = "root";
+
+$config = array();
+$config['host']     = "localhost";
+$config['dbname']   = "bis2bis";
+$config['dbuser']   = "root";
+$config['dbpass']   = "root";
 
 global $db;
 global $config;
